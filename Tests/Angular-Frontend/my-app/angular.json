@@ -60,7 +60,8 @@
               "buildTarget": "my-app:build:production"
             },
             "development": {
-              "buildTarget": "my-app:build:development"
+              "buildTarget": "my-app:build:development",
+              "proxyConfig": "../../proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
@@ -69,6 +70,7 @@
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
             "buildTarget": "my-app:build"
+           
           }
         },
         "test": {

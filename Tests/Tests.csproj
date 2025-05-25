@@ -49,8 +49,14 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.Cors">
+      <HintPath>D:\microsoft.aspnet.cors.Nuget\lib\net45\System.Web.Cors.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Http.Cors.resources">
+      <HintPath>D:\web.cors.5.2.9\lib\net45\fr\System.Web.Http.Cors.resources.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
@@ -16408,6 +16414,7 @@
     <Content Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Angular-Frontend\my-app\.angular\cache\17.3.17\my-app\.tsbuildinfo" />
     <None Include="Angular-Frontend\my-app\.editorconfig" />
     <None Include="Angular-Frontend\my-app\.vscode\extensions.json" />
     <None Include="Angular-Frontend\my-app\.vscode\launch.json" />
@@ -28192,6 +28199,7 @@
     <None Include="Angular-Frontend\my-app\tsconfig.json" />
     <None Include="Angular-Frontend\my-app\tsconfig.spec.json" />
     <None Include="packages.config" />
+    <None Include="proxy.conf.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Api\Api.csproj">
