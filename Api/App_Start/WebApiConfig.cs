@@ -10,8 +10,8 @@ namespace OweWay.Api
         {
             // Web API configuration and services
             //change by diyar
-           //var cors = new EnableCorsAttribute("*", "*", "*");
-           // config.EnableCors(cors);
+            //var cors = new EnableCorsAttribute("*", "*", "*");
+            //config.EnableCors();
             ////
             // Web API routes
             config.MapHttpAttributeRoutes();

@@ -75,7 +75,8 @@
               "buildTarget": "appFrontend:build:production"
             },
             "development": {
-              "buildTarget": "appFrontend:build:development"
+              "buildTarget": "appFrontend:build:development",
+              "proxyConfig": "proxy.conf.json" // added proxy configuration
             }
           },
           "defaultConfiguration": "development"

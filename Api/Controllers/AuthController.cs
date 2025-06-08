@@ -1,23 +1,55 @@
-﻿using System.Web.Http;
-using OweWay.Api.Models; // Make sure this matches your actual model namespace
-using System.Web.Http.Cors;
+﻿using OweWay.Api.Models;
+using OweWay.Domain.Entities;
+using System;
+using System.Linq;
+using System.Web.Http;
+using OweWay.Api;
 
-namespace OweWay.Api.Controllers
+[RoutePrefix("api/auth")]
+public class AuthController : ApiController
 {
-    //[EnableCors(origins: "*", headers: "*", methods: "*")]
-    [RoutePrefix("api/auth")]
-    public class AuthController : ApiController
+    [HttpPost]
+    [Route("register")]
+    public IHttpActionResult Register(RegisterModel model)
     {
-        [HttpPost]
-        [Route("register")]
-        public IHttpActionResult Register([FromBody] RegisterModel model)
+        using (var db = new MyDbContext())
         {
-            if (model == null || string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.Password))
-                return BadRequest("Invalid input.");
+            if (db.Users.Any(u => u.Email == model.Email))
+                return BadRequest("User with this email already exists.");
 
-            // TODO: Save the user to your database here
-
-            return Ok(new { message = "User registered successfully" });
+            var newUser = new User
+            {
+                Name = model.Name,
+                Email = model.Email,
+                Password = model.Password  // In real-world: Hash this!
+            };
+            db.Users.Add(newUser);
+            db.SaveChanges();
         }
+        return Ok("Registration successful!");
+    }
+
+    [HttpPost]
+    [Route("login")]
+    public IHttpActionResult Login(LoginModel model)
+    {
+        using (var db = new MyDbContext())
+        {
+            var user = db.Users.FirstOrDefault(u => u.Email == model.Email && u.Password == model.Password);
+            if (user == null)
+                return BadRequest("Invalid email or password.");
+
+            return Ok(new { message = "Login successful!", user = user.Name });
+        }
+    }
+
+    // Fix for the errors:
+    [HttpGet]
+    [Route("test-connection")]
+    public IHttpActionResult TestConnection()
+    {
+        string result = TestConnectionWithDB.connectionTest();
+        System.Diagnostics.Debug.WriteLine(result);
+        return Ok(result);
     }
 }

@@ -1,0 +1,28 @@
+<div class="form-container">
+  <button class="toggle-button" (click)="toggleForm()">
+    {{ showRegisterForm ? 'Switch to Login' : 'Switch to Register' }}
+  </button>
+
+  <!-- Registration Form -->
+  <div *ngIf="showRegisterForm" class="register-form">
+    <h2>Register</h2>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <input type="text" placeholder="Name" formControlName="name" required>
+      <input type="email" placeholder="Email" formControlName="email" required>
+      <input type="password" placeholder="Password" formControlName="password" required>
+      <button type="submit">Register</button>
+    </form>
+    <div class="message" *ngIf="message">{{ message }}</div>
+  </div>
+
+  <!-- Login Form (same CSS as register) -->
+  <div *ngIf="!showRegisterForm" class="register-form">
+    <h2>Login</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <input type="email" placeholder="Email" formControlName="email" required>
+      <input type="password" placeholder="Password" formControlName="password" required>
+      <button type="submit">Login</button>
+    </form>
+    <div class="message" *ngIf="message">{{ message }}</div>
+  </div>
+</div>
