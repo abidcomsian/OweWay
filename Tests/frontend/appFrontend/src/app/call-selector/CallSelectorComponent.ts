@@ -1,93 +1,116 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../auth.service';
-
+import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-call-selector',
-    templateUrl: './call-selector.component.html',
-    styleUrls: ['./call-selector.component.css']
+  selector: 'app-call-selector',
+  templateUrl: './call-selector.component.html',
+  styleUrls: ['./call-selector.component.css']
 })
 export class CallSelectorComponent {
-    // Define the form group for Reactive Forms
-    //registerForm = this.fb.group({
-    //  name: ['', Validators.required],
-    //  email: ['', [Validators.required, Validators.email]],
-    //  password: ['', Validators.required]
-    //});
-    /////////////////////////
-    registerForm: FormGroup;
-    loginForm: FormGroup;
-    message: string = '';
+  registerForm: FormGroup;
+  loginForm: FormGroup;
+  message: string = '';
+  showRegisterForm: boolean = true;
 
-    constructor(private fb: FormBuilder, private authService: AuthService, private http: HttpClient) {
-        this.registerForm = this.fb.group({
-            name: ['', Validators.required],
-            email: ['', [Validators.required, Validators.email]],
-            password: ['', Validators.required]
-        });
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+    this.registerForm = this.fb.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required]
+    });
 
-        this.loginForm = this.fb.group({
-            email: ['', [Validators.required, Validators.email]],
-            password: ['', Validators.required]
-        });
-    }
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required]
+    });
+  }
 
-    showRegisterForm: boolean = true; // default to show registration form
+  toggleForm(): void {
+    this.showRegisterForm = !this.showRegisterForm;
+    this.message = '';
+  }
 
-    toggleForm(): void {
-        this.showRegisterForm = !this.showRegisterForm;
-    }
-
-
-  onSubmit() {
+  onSubmit(): void {
     if (this.registerForm.valid) {
       const data = this.registerForm.value;
+
       this.authService.register(data).subscribe({
-        next: (response) => {
-          if (response.status === 'success') {
-            this.message = "Registration successful!";
-            // Optionally, switch to login form
-            this.showRegisterForm = false;
-            this.loginForm.controls['email'].setValue(data.email); // Prefill login email
-          } else if (response.status === 'exists') {
-            this.message = "You are already registered! Please log in.";
-            this.showRegisterForm = false; // switch to login
-            this.loginForm.controls['email'].setValue(data.email);
-          } else {
-            this.message = response.message || "Registration failed. Please try again.";
-          }
+        next: (response: any) => {
+          this.message = response.message || '🎉 Registration successful!';
+          this.showRegisterForm = false;
+          this.loginForm.controls['email'].setValue(data.email);
+          // Clear the registration form for new users
+          this.registerForm.reset();
         },
         error: (error) => {
-          // Show friendly error, not the raw HTML error page
-          if (error.status === 404) {
-            this.message = "Server endpoint not found. Please check your server.";
+          // Handle specific backend error messages if any
+          if (error.status === 400 && error.error && error.error.Message) {
+            this.message = `❌ ${error.error.Message}`;
+          } else if (error.status === 409) {
+            // Conflict, email already exists scenario
+            this.message = '❌ Email already exists. Please use a different email.';
+          } else if (error.status === 404) {
+            this.message = '❌ Server endpoint not found. Please check your server.';
           } else {
-            this.message = error.error?.message || "An error occurred. Please try again.";
+            this.message = '❌ Registration failed due to a server error. Please try again.';
           }
-        },
-        complete: () => {
-          // You can put a completion message here if needed
-          console.log('Registration observable completed.');
         }
       });
+    } else {
+      this.message = '⚠️ Please fill in all required fields correctly.';
     }
   }
 
 
+  onLogin(): void {
+    console.log('Login form submitted:', this.loginForm.value);
 
-    ////////////////////////
-    onLogin(): void {
-        if (this.loginForm.valid) {
-            this.authService.login(this.loginForm.value).subscribe({
-                next: (res) => {
-                    this.message = res.message;
-                },
-                error: (err) => {
-                    this.message = err.error || 'Invalid credentials. Please register first!';
-                }
-            });
+    if (this.loginForm.valid) {
+      console.log('Form is valid, making API call...');
+
+      const data = this.loginForm.value;
+
+      this.authService.login(data).subscribe({
+        next: (response: any) => {
+
+          if (response.Blocked) {
+            this.message = '❌ Your account is blocked. Please contact support.';
+            this.router.navigate(['/blockUser']);
+          } else {
+            this.message = response.Message || '✅ Login successful!';
+            if (response.Admin) {
+              // Admin redirection if needed
+              this.router.navigate(['/adminUser']);  // or admin home
+            } else {
+              // Normal user redirection
+              this.router.navigate(['/homeUser']);
+            }
+          }
+
+        },
+        error: (error) => {
+          console.log('Login error:', error);
+
+          const backendMessage = error.error?.Message || error.error?.message;
+
+          if (error.status === 400 && backendMessage) {
+            this.message = backendMessage;
+          } else if (error.status === 404) {
+            this.message = '❌ Server endpoint not found. Please check your server.';
+          } else {
+            this.message = '❌ Login failed due to a server error. Please try again.';
+          }
         }
+      });
+
+    } else {
+      this.message = '⚠️ Please fill in all required fields correctly.';
     }
+  }
+
 }
+
+
+

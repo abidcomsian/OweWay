@@ -1,0 +1,58 @@
+<h2>Admin Dashboard</h2>
+
+<!-- Button to navigate to CallSelectorComponent -->
+<button (click)="navigateToCallSelector()">Go to Call Selector</button>
+
+<!-- Dropdown for Admin Users -->
+<label for="adminDropdown">Select Admin:</label>
+<select id="adminDropdown" [(ngModel)]="selectedAdminId">
+  <option *ngFor="let admin of adminUsers" [value]="admin.id">
+    {{ admin.name }} (ID: {{ admin.id }})
+  </option>
+</select>
+
+<!-- Button to load users -->
+<button (click)="loadUsers()">Load Users</button>
+
+<table>
+  <thead>
+    <tr>
+      <th (click)="toggleColumn('id')">
+        ID <span class="chevron">▼</span>
+      </th>
+      <th (click)="toggleColumn('name')">
+        Name <span class="chevron">▼</span>
+      </th>
+      <th (click)="toggleColumn('email')">
+        Email <span class="chevron">▼</span>
+      </th>
+      <th (click)="toggleColumn('admin')">
+        Admin <span class="chevron">▼</span>
+      </th>
+      <th (click)="toggleColumn('blocked')">
+        Blocked <span class="chevron">▼</span>
+      </th>
+      <th>
+        Actions
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users">
+      <td [class.hide-column]="!showColumns['id']">{{ user.id }}</td>
+      <td [class.hide-column]="!showColumns['name']">{{ user.name }}</td>
+      <td [class.hide-column]="!showColumns['email']">{{ user.email }}</td>
+      <td [class.hide-column]="!showColumns['admin']">{{ user.admin }}</td>
+      <td [class.hide-column]="!showColumns['blocked']">{{ user.blocked }}</td>
+      <td>
+        <button *ngIf="!user.blocked" (click)="toggleBlockUser(user)">
+          Block
+        </button>
+        <button *ngIf="user.blocked" (click)="toggleBlockUser(user)">
+          Unblock
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+

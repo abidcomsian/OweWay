@@ -1,0 +1,22 @@
+<!-- Example BlockedUsersComponent -->
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Admin</th>
+      <th>Blocked</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of blockedUsers">
+      <td>{{ user.id }}</td>
+      <td>{{ user.name }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.admin }}</td>
+      <td>{{ user.blocked }}</td>
+      <!-- No actions column here -->
+    </tr>
+  </tbody>
+</table>

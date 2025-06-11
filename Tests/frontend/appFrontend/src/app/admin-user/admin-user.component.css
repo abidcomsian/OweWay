@@ -1,0 +1,171 @@
+/* Global table container styling */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 20px 0;
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  background: linear-gradient(145deg, #ffffff 0%, #f9f9f9 100%);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+  table:hover {
+    transform: scale(1.01);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.2);
+  }
+
+/* Table header with vibrant gradient */
+thead tr {
+  background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+  color: #ffffff;
+}
+
+thead th {
+  padding: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Table rows styling */
+tbody tr {
+  transition: background 0.4s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+  tbody tr:nth-child(even) {
+    background: rgba(245, 247, 250, 0.8);
+  }
+
+  tbody tr:hover {
+    background: linear-gradient(90deg, rgba(106, 17, 203, 0.1), rgba(37, 117, 252, 0.1));
+    box-shadow: inset 0 0 8px rgba(106, 17, 203, 0.2);
+    transform: translateX(3px);
+  }
+
+/* Table data styling */
+td {
+  padding: 14px 16px;
+  color: #333;
+}
+
+/* Highlight admin and blocked columns */
+tbody tr td:nth-child(4) {
+  font-weight: 600;
+  color: #6a11cb;
+}
+
+tbody tr td:nth-child(5) {
+  font-weight: 600;
+  color: #d32f2f;
+}
+
+/* Action button styling */
+button {
+  background: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 50px;
+  padding: 8px 16px;
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(238, 9, 121, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+  button:hover {
+    background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(238, 9, 121, 0.4);
+  }
+
+  button:active {
+    background: #c60055;
+  }
+
+/* Dashboard heading */
+h2 {
+  text-align: center;
+  font-size: 32px;
+  color: #fff;
+  margin-bottom: 25px;
+  letter-spacing: 1px;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #ee0979 0%, #ff6a00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+/* Rounded corners for first and last columns */
+tbody tr td:first-child {
+  border-radius: 15px 0 0 15px;
+}
+
+tbody tr td:last-child {
+  border-radius: 0 15px 15px 0;
+}
+
+/* Additional glow effect on hover */
+tbody tr:hover td {
+  color: #111;
+  font-weight: 500;
+  text-shadow: 0 0 3px rgba(106, 17, 203, 0.2);
+}
+
+/* Animate header gradient background */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+thead tr {
+  background: linear-gradient(270deg, #ff6a00, #ee0979, #6a11cb, #2575fc);
+  background-size: 600% 600%;
+  animation: gradientShift 8s ease infinite;
+  color: #ffffff;
+}
+
+thead th {
+  padding: 16px;
+  font-weight: 700;
+  position: relative;
+  cursor: pointer;
+}
+
+  /* Chevron icon styling */
+  thead th .chevron {
+    margin-left: 8px;
+    font-size: 12px;
+    transition: transform 0.3s ease;
+  }
+
+  thead th:hover .chevron {
+    transform: rotate(180deg);
+  }
+
+/* Table data cells */
+tbody td {
+  transition: opacity 0.4s ease, transform 0.3s ease;
+}
+
+/* Hide class for toggling columns */
+.hide-column {
+  opacity: 0;
+  transform: scale(0);
+  pointer-events: none;
+}
+
